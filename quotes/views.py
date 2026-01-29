@@ -10,8 +10,9 @@ import random
 
 quotes_list = [
         "With your votes you are working for your future. It is not a holiday; it is the most serious day of work since you were born. Better to come in clothing dirty from work than with your soul filthy from having sold your right to justice.",
-        "Remember this: you can have justice, or you can have two dollars. But you can t have both.",
+        "Remember this: you can have justice, or you can have two dollars. But you can't have both.",
         "We are still climbing a steep hill. We are far from the top, but we can see the top in the distance.",
+        "El buen uso de todo el talento natural que produce Puerto Rico--gran riqueza oculta-- aumentará la cantidad de nuestra producción y mejorará la calidad de nuestra civilización.",
 ]
 
 images_list = [

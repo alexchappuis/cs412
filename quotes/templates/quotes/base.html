@@ -1,17 +1,15 @@
 {% load static %}
 <html>
-    <head>
-        <title>Luis Muñoz Marin Quote Of The Day</title>
-        <link rel="stylesheet" href="{% static 'styles.css' %}">
-    </head>
     <body>
-        <header>
+        <head>
+            <title>Luis Muñoz Marin Quote Of The Day</title>
+            <link rel="stylesheet" href="{% static 'styles.css' %}">
+        </head>
         <nav>
             <li><a href="{% url 'quote' %}">Quote Of The Day</a></li>
             <li><a href="{% url 'show_all' %}">Show All</a></li>
-            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'about' %}">Show All</a></li>
         </nav>
-    </header>
         
     <main>
         {% block content %}{% endblock %}
@@ -21,6 +19,7 @@
     
     <footer>
         Created by Alexc26@bu.edu
+
     </footer>
  
     </body>
