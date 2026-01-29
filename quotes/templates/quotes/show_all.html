@@ -1,0 +1,19 @@
+
+{% extends "quotes/base.html" %}
+
+
+{% block content %}
+<h2>All Quotes by Luis Muñoz Marín</h2>
+
+<ul>
+    {% for q in quotes %}
+        <li>{{ q }}</li>
+    {% endfor %}
+</ul>
+
+<h2>All Photos of Luis Muñoz Marín</h2>
+
+{% for img in images %}
+    <img src="{{ img }}" alt="Luis Muñoz Marín photo" width="250">
+{% endfor %}
+{% endblock %}

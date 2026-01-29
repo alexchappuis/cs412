@@ -1,0 +1,14 @@
+{% extends 'quotes/base.html' %}
+ 
+ 
+{% block content %}
+<h2>Quote of the Day</h2>
+
+    <figure>
+        <img src="{{ image }}" alt="Luis Muñoz Marín" width="350">
+        <p>
+            “{{ quote }}”
+        </p>
+    </figure>
+ 
+{% endblock %}

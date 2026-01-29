@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'cs-webapps.bu.edu', 
+    '*',
 ]
 
 
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "hw", 
+    "quotes",
 ]
 
 MIDDLEWARE = [
@@ -60,6 +63,7 @@ TEMPLATES = [
         "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
+            "string_if_invalid": "WARNING: {{%s}} not a valid context variable",
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -134,3 +138,5 @@ CS_DEPLOYMENT_HOSTNAME = 'cs-webapps.bu.edu'
 if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
     STATIC_URL = '/alexc26/static/'
     MEDIA_URL = '/alexc26/media/'
+
+ 
