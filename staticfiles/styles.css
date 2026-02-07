@@ -1,228 +1,264 @@
+/* =========================
+   PASTEL BLUE + CREAM PALETTE
+========================= */
+:root {
+  --blue-main: #a9c8ff;
+  --blue-soft: #edf4ff;
+  --blue-hover: #8fb4ff;
+
+  --cream-main: #fffaf2;
+  --cream-soft: #fff5e6;
+
+  --text-dark: #3a3a3a;
+  --text-muted: #7a7a7a;
+
+  --card-bg: #ffffff;
+  --border-soft: #ece6d9;
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
+}
+
 body {
-    background-color: #fff;
-    color: slategray;
-    font-family: arial;
+  margin: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: var(--cream-main);
+  color: var(--text-dark);
 }
 
-h1,h2,h3,h4,h5{
-    font-weight: normal;
-    background:aliceblue;
-    margin: 0;
+/* CONTAINER */
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
 }
 
-a, a:visited {
-    color: slategrey;
-    text-decoration: none;
+/* =========================
+   NAV
+========================= */
+.nav {
+  background: #fff;
+  border-bottom: 1px solid var(--border-soft);
 }
 
-a:hover {
-    color: darkblue;
-    text-decoration: none;
-    background-color: white;
-    /* font-weight: bold; */
+.nav-list {
+  margin: 0;
+  padding: 1rem 0;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
 }
 
-body {
-    max-width: 960px;
-    margin: 20px auto;
-    padding: 20px auto;
+.nav a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
-header {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    background:aliceblue;
-    position: fixed;
-    top: 0px;
-    z-index: 999;
-    /* padding-right: 50px auto; */
+.nav a:hover {
+  color: var(--blue-main);
 }
 
-footer {
-    width: 100%;
-    background:aliceblue;
-    position: fixed;
-    bottom: 0px;
+/* =========================
+   HERO
+========================= */
+.hero {
+  padding: 3.5rem 0 1.5rem;
+  text-align: center;
+  background: var(--blue-soft);
+  border-bottom: 1px solid var(--border-soft);
 }
 
-
-.wrapper {              /* centering and margin around whole wrapper element */
-    border: 2px solid;
-    max-width: 100%;
-    position: relative;
-    top: 50px;
-    scroll-padding-top: 100px;
-    /* scroll-padding-bottom: 100px; */
-    padding-bottom: 50px;
-    
-    /* top:100px; */
-    /* bottom: 100px; */
+.kicker {
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin: 0;
 }
 
-
-div.wrapper h1 {
-    text-align: center;
-    color: darkblue;
-    margin: 10px auto;
-    font-size: 2.4 em; 
-
+.hero-title {
+  font-weight: 400;
+  font-size: 3rem;
+  margin: 0.5rem 0 0.25rem;
 }
 
-div.wrapper h2 {
-    text-align: left;
-    color: darkblue;
-    margin: 5px auto;
-    font-size: 2 em; 
+.hero-desc {
+  margin: 0 auto;
+  max-width: 560px;
+  color: var(--text-muted);
 }
 
-
-section {
-    border: 2px solid darkblue;    /* border around each event */
-    position: relative;
-    padding-bottom: 4px;
+/* =========================
+   PAGE CENTERING
+========================= */
+.page {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 1rem 4rem;
 }
 
-
-nav {
-    justify-self: end;
-    background: none;
-    color: darkblue;
-    /* border: 1px solid; */
+/* =========================
+   CARD
+========================= */
+.card {
+  width: 100%;
+  max-width: 560px;
+  background: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(160,180,210,0.15);
+  padding: 2rem;
+  border: 1px solid var(--border-soft);
 }
 
-nav li {
-    display: inline-block;
-    margin-left: 20px;
+.card-header {
+  margin-bottom: 1.25rem;
 }
 
-nav button {
-    background: none;
-    color: slategray;
-    font-family: Arial;
-    cursor: pointer; 
-    border: 0;
-    font-size: 1.2 em;
+.card-title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 500;
 }
 
-.mc-table {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
+.card-subtitle {
+  margin: 0.5rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.4;
 }
 
-
-.mc-table-head {
-    border: 1px dashed darkblue;    /*border around each row */
-    display: table-row;
-    font-size: 1.2em;
+/* =========================
+   FORM FIELDS
+========================= */
+.field {
+  margin: 1rem 0;
 }
 
-.mc-table-head .detail {
-    display: table-cell;
-    color:darkblue;
-    font-weight: bold;
-    background-color: white;
-    padding: 5px;
-    position: relative;
-   
+.label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
 }
 
-.mc-table-row  {
-    display: table-row;
-    border: 1px dashed darkblue;    /*border around each row */
-    background-color: white;
+input[type="text"] {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  outline: none;
+  background: #fff;
 }
 
-
-.mc-table-row .detail {
-    color:darkblue;
-    display: table-cell;
-   
-    padding: 5px;
+input[type="text"]:focus {
+  border-color: var(--blue-main);
 }
 
-.mc-table-row .detail img {
-    max-height: 75px;
-    align-content: right;
+/* =========================
+   MENU LIST
+========================= */
+.menu-section {
+  margin-top: 1.25rem;
 }
 
-/* must have no space before :hover */
-.mc-table-row:hover {
-    background-color: aliceblue;    
-    border: 1px solid;
+.section-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
 }
 
-.site-form {
-    margin-top: 10px;
-    /* border: 2px solid darkblue; */
-    padding: 10px;
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.75rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+  background: #fff;
+  transition: all 0.15s ease;
 }
 
-/* style the forms with class site-form */
-.site-form input, .site-form textarea, .site-form select {
-    display: block;
-    margin: 5px 0 0 0;
-    padding: 5px;
+.menu-item:hover {
+  background: var(--cream-soft);
 }
 
-/* style the submit button ; didn't quite work?? */
-.site-form input [type="submit"] {
-    background: slategray;
-    border: 0;
-    color: fff;
-    font-size: 1.2em;
-    border-radius: 4px;
-    margin: 5px 0;
+.menu-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-
-/* style the help text in the forms */
-.helptext, .helptext.ul {
-    margin-top: 0 auto;
-    bottom: 20px;
-    color: #bbb;
-    font-size: 0.9em;
+.item-name {
+  color: var(--text-dark);
 }
 
-/* style the error list in the forms validation */
-.errorlist li {
-    padding: 10px;
-    list-style-type: none;
-    border: 1px solid crimson;
-    color: crimson;
-    margin: 10px 0;
+.price {
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
-
-.errorlist {
-    padding: 0px;
+.submenu {
+  margin: 0.75rem 0 1rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: var(--cream-soft);
+  border: 1px solid var(--border-soft);
 }
 
+.submenu-title {
+  margin: 0 0 0.6rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
 
-/* responsive styles when width is less than 1400px */
-@media screen and (max-width: 560px) {
-    header h1 {
-        size: 0.8em;
-    }
+.sub-item {
+  border: none;
+  background: transparent;
+  padding: 0.5rem 0.25rem;
+  margin-bottom: 0;
+}
 
-    nav li {
-        display: block;
-        margin-left: 0px;
-        font-size: 14px;
-        width: 100%;
-    }
-    
-    nav button {
-        background: none;
-        color: slategray;
-        font-family: Arial;
-        cursor: pointer; 
-        border: 0;
-        font-size: 20px;
-    }
-    /* on mobile, display image as max 95% of available width*/
-    img {
-        max-width: 95%;
-    }
+/* =========================
+   BUTTON
+========================= */
+.btn {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: none;
+  border-radius: 12px;
+  background: var(--blue-main);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.2s ease, transform 0.1s ease;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: var(--blue-hover);
+  transform: translateY(-1px);
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  background: var(--blue-soft);
 }

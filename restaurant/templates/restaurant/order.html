@@ -1,0 +1,41 @@
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+<section class="card">
+    <h1>Food Order</h1>
+    <p>Select your tapas and leave any dietary notes. We'll confirm your order on the next page.</p>
+  
+    <form action="{% url 'submit' %}" method="POST">
+        {% csrf_token %}
+
+        <div><input type="checkbox" name="food1"> Ceviche - $12</div>
+        <div><input type="checkbox" name="food2"> Patatas Bravas - $14</div>
+        <div><input type="checkbox" name="food3"> Montaditos - $10</div>
+        <div style="margin-left: 1.5rem;">
+            <label><input type="checkbox" name="food4"> Add Chorizo Jam + Goat Cheese</label><br>
+            <label><input type="checkbox" name="food5"> Add Pan con Tomate</label><br>
+        </div>
+        <div><input type="checkbox" name="food6"> Carilleras - $34</div>
+        
+        <div>
+            <input type="checkbox" name="daily_special"> 
+            Daily Special: {{ daily_special.name }} - ${{ daily_special.price }}
+            <input type="hidden" name="daily_special_name" value="{{ daily_special.name }}">
+            <input type="hidden" name="daily_special_price" value="{{ daily_special.price }}">
+        </div>
+
+        <p>
+            Please input any dietary restrictions:<br>
+            <input type="text" name="dietary_restrictions">
+        </p>
+
+        <h3>Customer Information:</h3>
+        <p>
+            Name: <input type="text" name="name" required><br>
+            Phone Number: <input type="text" name="phone_num" required>
+        </p>
+    
+        <button class="btn btn-primary" type="submit">Place Order</button>
+    </form>
+</section>
+{% endblock %}

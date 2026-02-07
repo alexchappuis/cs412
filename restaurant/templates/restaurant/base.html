@@ -1,0 +1,30 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'styles.css' %}">
+
+  <head> 
+    <title>LOS TIOS</title>
+  </head>
+
+
+    <div class="hero">
+        <div class="container hero-inner">
+          <p class="kicker">Bienvenido a</p>
+          <h1 class="hero-title">Los Tíos</h1>
+          <p class="hero-desc">
+            Small plates inspired by Spain — bright, seasonal, and made to share.
+          </p>
+          <div class="hero-cta">
+          </div>
+        </div>
+      <main class="page">
+          {% block content %}
+          {% endblock %}
+      </main>
+    
+<footer class="footer">
+    <div class="container footer-inner">
+      <p> Los Tíos • Crafted in Boston</p>
+      <p class="footer-note">Yes this is actaully my restaurant instagram is @tios.boston</p>
+    </div>
+</footer>

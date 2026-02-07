@@ -1,0 +1,38 @@
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+<section class="card">
+  <header class="card-header">
+    <h1 class="card-title">Welcome to Los Tíos</h1>
+    <p class="card-subtitle">
+      Our mission is to create affordable, creative fine dining in Allston.
+    </p>
+  </header>
+
+  <img src="https://www.shutterstock.com/image-photo/gilda-traditional-pincho-tapa-basque-600nw-2679359217.jpg" 
+  alt="Spanish tapas" 
+  style="width: 100%; max-width: 600px; margin: 1rem 0; border-radius: 8px;">
+
+  <div class="menu-section">
+    <h3>Location</h3>
+    <p>70 Chester Street, Allston, MA 02134</p>
+    
+    <h3>Hours of Operation</h3>
+    <ul>
+        <li>Monday - Thursday: 5:00 PM - 10:00 PM</li>
+        <li>Friday - Saturday: 5:00 PM - 11:00 PM</li>
+        <li>Sunday: 4:00 PM - 9:00 PM</li>
+    </ul>
+
+    <p class="section-title">Tonight's vibe</p>
+    <p>
+      Bright Spanish-inspired small plates, seasonal ingredients, and a menu designed for sharing.
+      Place an order online and we'll confirm everything on the next page.
+    </p>
+
+    <div>
+      <a class="btn" href="{% url 'order' %}">View Menu / Place Order</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

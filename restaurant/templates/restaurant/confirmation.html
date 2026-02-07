@@ -1,0 +1,31 @@
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+<section class="card">
+    <h1>Order Confirmation</h1>
+    <p>Thank you for your order, {{ name }}!</p>
+    
+    <h3>Order Details:</h3>
+    <ul>
+        {% for item in ordered_items %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+    
+    {% if dietary_restrictions %}
+    <p><strong>Dietary Restrictions:</strong> {{ dietary_restrictions }}</p>
+    {% endif %}
+    
+    <p><strong>Total Price:</strong> ${{ total_price }}</p>
+    
+    <h3>Customer Information:</h3>
+    <p>
+        <strong>Name:</strong> {{ name }}<br>
+        <strong>Phone:</strong> {{ phone_num }}
+    </p>
+    
+    <p><strong>Your order will be ready at: {{ ready_time }}</strong></p>
+    
+    <a class="btn" href="{% url 'main' %}">Back to Home</a>
+</section>
+{% endblock %}
