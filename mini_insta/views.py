@@ -1,14 +1,19 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from .models import Profile
 
 # Create your views here.
 
 
 class ProfileListView(ListView):
-
     model = Profile
-
-    template_name = 'profile/show_all_profiles.html'
-
+    template_name = 'mini_insta/show_all_profiles.html'
     context_object_name = "profiles"
+
+
+
+class ProfileDetailView(DetailView):
+    '''Show the details for one Profile.'''
+    model = Profile
+    template_name = "mini_insta/show_profile.html"
+    context_object_name = 'profile'

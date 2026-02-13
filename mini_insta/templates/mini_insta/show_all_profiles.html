@@ -1,0 +1,27 @@
+{% extends "mini_insta/base.html" %}
+
+{% block content %}
+<h1>All Profiles</h1>
+
+<section class="grid-container">
+{% for p in profiles %}
+
+  <article>
+
+    {% if p.profile_image_url %}
+      <a href="{% url 'show_profile' p.pk %}">
+        <img src="{{ p.profile_image_url }}" alt="{{ p.display_name }}">
+      </a>
+    {% endif %}
+
+    <h3>{{ p.display_name }}</h3>
+    <p>@{{ p.username }}</p>
+    <p>Joined: {{ p.join_date }}</p>
+    <p>{{ p.bio_text }}</p>
+
+  </article>
+
+{% endfor %}
+</section>
+
+{% endblock %}

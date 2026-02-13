@@ -1,0 +1,29 @@
+{% load static %}
+<!doctype html>
+<html>
+  <head>
+    <title>Mini Insta</title>
+    <link rel="stylesheet" href="{% static 'styles-mini-insta.css' %}">
+  </head>
+
+  <body>
+      <div>
+        <h1><a href="{% url 'show_all_profiles' %}">Mini Insta</a></h1>
+        <nav>
+          <a href="{% url 'show_all_profiles' %}">All Profiles</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+
+    <footer>
+      <div>
+        <a href="{% url 'show_all_profiles' %}">Back to All Profiles</a>
+      </div>
+    </footer>
+  </body>
+</html>
