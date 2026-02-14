@@ -1,3 +1,7 @@
+# File: urls.py
+# Author: alexander chappuis (alexc26@bu.edu), 2/10/26
+# Description: URl paths
+
 from django.urls import path
 from .views import ProfileListView, ProfileDetailView
 

@@ -1,3 +1,7 @@
+# File: models.py
+# Author: alexander chappuis (alexc26@bu.edu), 2/10/26
+# Description: contains the models for storing data
+
 from django.db import models
  
  

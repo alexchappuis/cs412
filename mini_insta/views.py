@@ -1,8 +1,11 @@
+# File: views.py
+# Author: alexander chappuis (alexc26@bu.edu), 2/10/26
+# Description: contains the views for two profile views
+
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from .models import Profile
 
-# Create your views here.
 
 
 class ProfileListView(ListView):
