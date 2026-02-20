@@ -1,23 +1,42 @@
-<!-- blog/templates/blog/base.html -->
-{% load static %}
-<html>
-    <head>
-        <title>Blog</title>
-        <link rel="stylesheet" href="{% static 'styles-blog.css' %}">
-    </head>
-    <body>
-        <header>
-            <h1>Blog</h1>
-            <nav>
-                <ul>
-                    <li><a href="{% url 'show_all' %}">Show All</a></li>
-                    <li><a href="{% url 'random' %}">Random</a></li>
-                </ul>
-            </nav>
-        </header>
+{% extends 'blog/base.html' %}
+<h1>{{article.title}}</h1>
+ 
+ 
+{% block content %}
+<main class="grid-container">
     
-    {% block content %}
-    {% endblock %}    
-  
-    </body>
-</html>
+    <article class="featured">
+        {% if article.image_url %}
+		<img src="{{article.image_url}}" alt="{{article.image_url}}">
+		{% endif %}
+        
+        <div>
+        <h2>{{article.title}}</h2>
+        <strong>by {{article.author}} at {{article.published}}</strong>
+        <p>
+        {{article.text}}
+        </p>
+        </div>
+    </article>
+ 
+ 
+    <div>
+    <h2>Comments</h2>
+    <!-- Comments:
+    {{article.get_all_comments}} -->
+ 
+ 
+    {% for comment in article.get_all_comments %}
+    <article>
+        <div>
+        <strong>by {{comment.author}} at {{comment.published}}</strong>
+        <p>
+        {{comment.text}}
+        </div>
+    </article>
+ 
+ 
+    {% endfor %}
+</div>
+</main>
+{% endblock %}
