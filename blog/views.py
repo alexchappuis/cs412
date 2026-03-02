@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
-from .models import Article
-from .forms import CreateArticleForm ## new
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .models import Article, Comment  # Comment was missing
+from .forms import CreateArticleForm, CreateCommentForm, UpdateArticleForm  # CreateCommentForm was missing
 from django.urls import reverse
 
 
@@ -67,26 +67,14 @@ class CreateCommentView(CreateView):
  
  
  
- 
-    def form_valid(self, form):
-        '''This method handles the form submission and saves the 
-        new object to the Django database.
-        We need to add the foreign key (of the Article) to the Comment
-        object before saving it to the database.
+ def form_valid(self, form):
         '''
+        Handle the form submission to create a new Article object.
+        '''
+        print(f'CreateArticleView: form.cleaned_data={form.cleaned_data}')
  
  
-		# instrument our code to display form fields: 
-        print(f"CreateCommentView.form_valid: form.cleaned_data={form.cleaned_data}")
-        
-        # retrieve the PK from the URL pattern
-        pk = self.kwargs['pk']
-        article = Article.objects.get(pk=pk)
-        # attach this article to the comment
-        form.instance.article = article # set the FK
- 
- 
-        # delegate the work to the superclass method form_valid:
+		# delegate work to the superclass version of this method
         return super().form_valid(form)
         
             
@@ -101,3 +89,25 @@ class CreateCommentView(CreateView):
         pk = self.kwargs['pk']
         # call reverse to generate the URL for this Article
         return reverse('article', kwargs={'pk':pk})
+
+
+
+class UpdateArticleView(UpdateView):
+
+    form_class = UpdateArticleForm 
+    template_name = "blog/update_article_form.html"
+
+
+class DeleteCommentView(DeleteView):
+    model = Comment
+    template_name = "blog/delete_comment_form.html"
+
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        comment = Comment.objects.get(pk=pk)
+
+        article = comment.article
+
+
+        return reverse('article', kwargs = {'pk':article.pk})

@@ -1,0 +1,30 @@
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>Search Results for "{{ query }}"</h1>
+
+<h2>Profiles</h2>
+{% for p in profiles %}
+  <div>
+    <a href="{% url 'show_profile' p.pk %}">{{ p.display_name }}</a> (@{{ p.username }})
+    <p>{{ p.bio_text|truncatewords:20 }}</p>
+  </div>
+
+{% endfor %}
+
+<hr>
+
+<h2>Posts</h2>
+{% for post in posts %}
+  <div>
+    <p><a href="{% url 'show_profile' post.profile.pk %}">{{ post.profile.display_name }}</a>: {{ post.caption }}</p>
+    <small>{{ post.timestamp|date:"F j, Y" }}</small>
+    | <a href="{% url 'show_post' post.pk %}">View Post</a>
+  </div>
+
+{% endfor %}
+
+<hr>
+<p><a href="{% url 'search' profile.pk %}">Search Again</a>
+| <a href="{% url 'show_profile' profile.pk %}">Back to Profile</a></p>
+{% endblock %}

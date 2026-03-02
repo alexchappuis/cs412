@@ -1,3 +1,5 @@
+
+
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
@@ -7,9 +9,7 @@
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
     {% for photo in post.get_all_photos %}
-        <img src="{{ photo.image_url }}" alt="Post photo" style="max-width: 400px;">
-    {% empty %}
-        <img src="https://via.placeholder.com/400x300?text=No+Image" alt="No image available">
+        <img src="{{ article.image_file.url }}" alt="Post photo" style="max-width: 400px;">
     {% endfor %}
 </div>
 

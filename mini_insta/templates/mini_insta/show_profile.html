@@ -5,8 +5,12 @@
 <section class="grid-container">
   <article class="featured">
 
-    {% if profile.profile_image_url %}
-      <img src="{{ profile.profile_image_url }}">
+    {% if profile.image_file %}
+      <img src="{{ profile.image_file.url }}" alt="{{ profile.display_name }}">
+    {% elif profile.profile_image_url %}
+      <img src="{{ profile.profile_image_url }}" alt="{{ profile.display_name }}">
+    {% else %}
+      <h3>No image</h3>
     {% endif %}
 
     <div>
@@ -14,6 +18,16 @@
       <p>@{{ profile.username }}</p>
       <p>Joined: {{ profile.join_date|date:"F j, Y" }}</p>
       <p>{{ profile.bio_text }}</p>
+
+      <p>
+        <a href="{% url 'show_followers' profile.pk %}">Followers: {{ profile.get_num_followers }}</a>
+        |
+        <a href="{% url 'show_following' profile.pk %}">Following: {{ profile.get_num_following }}</a>
+      </p>
+
+      <p>
+        <a href="{% url 'update_profile' profile.pk %}">Update Profile</a>
+      </p>
     </div>
 
   </article>
@@ -29,7 +43,7 @@
 
       {% with photos=post.get_all_photos %}
         {% if photos %}
-          <img src="{{ photos.first.image_url }}" alt="Post photo">
+          <img src="{{ photos.first.get_image_url }}" alt="Post photo">
         {% else %}
           <img src="https://via.placeholder.com/300x300?text=No+Image" alt="No image">
         {% endif %}
@@ -43,8 +57,7 @@
       </div>
 
     </div>
-  {% empty %}
-    <p>No posts yet.</p>
+
   {% endfor %}
 </div>
 

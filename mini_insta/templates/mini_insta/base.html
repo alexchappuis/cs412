@@ -7,10 +7,15 @@
   </head>
 
   <body>
+    <header>
       <div>
         <h1><a href="{% url 'show_all_profiles' %}">Mini Insta</a></h1>
         <nav>
           <a href="{% url 'show_all_profiles' %}">All Profiles</a>
+          {% if profile %}
+            | <a href="{% url 'show_feed' profile.pk %}">Feed</a>
+            | <a href="{% url 'search' profile.pk %}">Search</a>
+          {% endif %}
         </nav>
       </div>
     </header>
@@ -22,13 +27,14 @@
 
     <footer>
       <div>
-        <a href="{% url 'show_all_profiles' %}">Back to All Profiles</a>
+        {% if profile %}
+          <a href="{% url 'show_feed' profile.pk %}">Home</a> |
+          <a href="{% url 'create_post' profile.pk %}">Create Post</a> |
+          <a href="{% url 'show_profile' profile.pk %}">My Profile</a>
+        {% else %}
+          <a href="{% url 'show_all_profiles' %}">Back to All Profiles</a>
+        {% endif %}
       </div>
-      {% if profile %}
-      <div>
-        <a href="{% url 'create_post' profile.pk %}">Create Post</a>
-      </div>
-      {% endif %}
     </footer>
   </body>
 </html>
