@@ -38,6 +38,10 @@
 <h2>Posts</h2>
 
 <div class="posts-grid">
+  {% if request.user == profile.user %}
+  <p><a href="{% url 'update_profile' %}">Update Profile</a></p>
+  <p><a href="{% url 'create_post' %}">Create Post</a></p>
+  {% endif %}
   {% for post in profile.get_all_posts %}
     <div class="post-card">
 

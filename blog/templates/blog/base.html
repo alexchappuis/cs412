@@ -1,45 +1,47 @@
 {% load static %}
-
-
-
-<h1>{{article.title}}</h1>
  
  
-{% block content %}
-<main class="grid-container">
-    
-    <article class="featured">
-        {% if article.image_url %}
-		<img src="{{article.image_url}}" alt="{{article.image_url}}">
-		{% endif %}
-        
-        <div>
-        <h2>{{article.title}}</h2>
-        <strong>by {{article.author}} at {{article.published}}</strong>
-        <p>
-        {{article.text}}
-        </p>
-        </div>
-    </article>
+<html>
+    <head>
+        <title>Our Blog</title>
+        <link rel="stylesheet" href="{% static 'styles-blog.css' %}">
+    </head>
  
  
-    <div>
-    <h2>Comments</h2>
-    <!-- Comments:
-    {{article.get_all_comments}} -->
+    <body>
+        <head>
+            <h1>Our Blog</h1>
+            <nav>
+                <ul>
+					<<!-- URLs for users who are not logged in -->
+                    <li><a href="{% url 'random' %}">Random</a></li>
+                    <li><a href="{% url 'show_all' %}">Show All</a></li>
  
  
-    {% for comment in article.get_all_comments %}
-    <article>
-        <div>
-        <strong>by {{comment.author}} at {{comment.published}}</strong>
-        <p>
-        {{comment.text}}
-        </div>
-    </article>
+                    <!-- URLs for logged in users only -->
+                    {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'create_article' %}">Create</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
  
  
-    {% endfor %}
-</div>
-</main>
-{% endblock %}
+                    <!-- URLs for users who are not logged in -->
+                    {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                <hr>
+                {% if request.user.is_authenticated %}
+                Logged in as: {{request.user}}
+                {% else %}
+                Not logged in.
+                {% endif %}
+            </nav>
+        </head>
+ 
+        <!-- substitute in the specific content here -->
+        {% block content %}
+        {% endblock %}
+ 
+    </body>
+ 
+</html>

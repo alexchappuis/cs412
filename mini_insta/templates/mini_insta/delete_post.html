@@ -1,6 +1,9 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+
+{% if request.user.is_authenticated %}
+
 <h1>Delete Post</h1>
 
 <p>Are you sure you want to delete this post?</p>
@@ -20,4 +23,7 @@
 <form action="{% url 'show_profile' profile.pk %}" method="GET" style="display:inline;">
     <input type="submit" value="Cancel">
 </form>
+<p>You must be logged in to delete a post</p>
+<li><a href="{% url 'login' %}">Login</a></li>
+{% endif %}
 {% endblock %}

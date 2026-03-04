@@ -1,6 +1,9 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+
+{% if request.user.is_authenticated %}
+
 <h1>Update Profile</h1>
 
 <form action="{% url 'update_profile' profile.pk %}" method="POST" enctype="multipart/form-data">

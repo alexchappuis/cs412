@@ -1,6 +1,9 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+
+{% if request.user.is_authenticated %}
+
 <h1>Search Results for "{{ query }}"</h1>
 
 <h2>Profiles</h2>

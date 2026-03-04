@@ -5,9 +5,22 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Profile, Post, Photo
-from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm
+from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm, CreateProfileForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.contrib.auth.forms import UserCreationForm 
+from django.contrib.auth.models import User 
+from django.contrib.auth import login
 
+class MyLoginRequiredMixin(LoginRequiredMixin):
+
+    def get_login_url(self) -> str:
+        '''get the url for the login page.'''
+        return reverse('login')
+
+    def get_logged_in_profile(self):
+        '''get the profile with the user that is logged in'''
+        return Profile.objects.get(user=self.request.user)
 
 
 
@@ -34,8 +47,9 @@ class PostDetailView(DetailView):
 
 
 
-class CreatePostView(CreateView):
+class CreatePostView(MyLoginRequiredMixin,CreateView):
     '''handle creation of a new Post.'''
+
 
     form_class = CreatePostForm
     template_name = "mini_insta/create_post_form.html"
@@ -45,7 +59,7 @@ class CreatePostView(CreateView):
 
         context = super().get_context_data()
         pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
+        profile = self.get_logged_in_profile()
         context['profile'] = profile
         return context
 
@@ -54,7 +68,7 @@ class CreatePostView(CreateView):
 
         print(f"CreatePostView.form_valid: form.cleaned_data={form.cleaned_data}")
 
-        pk = self.kwargs['pk']
+        pk = self.get_logged_in_profile()
         profile = Profile.objects.get(pk=pk)
 
         form.instance.profile = profile 
@@ -67,23 +81,31 @@ class CreatePostView(CreateView):
 
         return saved
 
+        #require login
+
+
     def get_success_url(self):
         '''after submitting the post go to the submission'''
         return reverse('show_post', kwargs={'pk': self.object.pk})
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(MyLoginRequiredMixin, UpdateView):
     model = Profile
     form_class = UpdateProfileForm
     template_name = "mini_insta/update_profile_form.html"
+    def get_object(self):
+        '''get the profile using the custom mixin'''
+        return self.get_logged_in_profile()
 
 
-class UpdatePostView(UpdateView):
+
+class UpdatePostView(MyLoginRequiredMixin,UpdateView):
     model = Post
     form_class = UpdatePostForm
     template_name = "mini_insta/update_post_form.html"
 
 
-class DeletePostView(DeleteView):
+
+class DeletePostView(MyLoginRequiredMixin, DeleteView):
     '''delete post'''
     model = Post
     template_name = "mini_insta/delete_post_form.html"
@@ -113,25 +135,27 @@ class ShowFollowingDetailView(DetailView):
     template_name = "mini_insta/show_following.html"
     context_object_name = 'profile'
 
-
-class PostFeedListView(ListView):
+class PostFeedListView(MyLoginRequiredMixin, ListView):
     '''handles the post feed'''
     template_name = "mini_insta/show_feed.html"
     context_object_name = "posts"
 
     def get_queryset(self):
-        pk = self.kwargs['pk']
+        pk = self.get_logged_in_profile()
         profile = Profile.objects.get(pk=pk)
         return profile.get_post_feed()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pk = self.kwargs['pk']
+        pk = self.get_logged_in_profile()
         context['profile'] = Profile.objects.get(pk=pk)
         return context
+    def get_object(self):
+        '''get the profile using the custom mixin'''
+        return self.get_logged_in_profile()
 
 
-class SearchView(ListView):
+class SearchView(MyLoginRequiredMixin, ListView):
     '''handles search for Profiles and Posts.'''
 
     template_name = "mini_insta/search_results.html"
@@ -139,7 +163,7 @@ class SearchView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         if 'query' not in self.request.GET:
-            pk = self.kwargs['pk']
+            pk = self.get_logged_in_profile()
             profile = Profile.objects.get(pk=pk)
             return render(request, 'mini_insta/search.html', {'profile': profile})
         return super().dispatch(request, *args, **kwargs)
@@ -150,7 +174,7 @@ class SearchView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pk = self.kwargs['pk']
+        pk = self.get_logged_in_profile()
         query = self.request.GET.get('query', '')
         context['profile'] = Profile.objects.get(pk=pk)
         context['query'] = query
@@ -165,3 +189,52 @@ class SearchView(ListView):
                 seen_keys.add(profile.pk)
         context['profiles'] = all_profiles
         return context
+ 
+    def get_object(self):
+            '''get the profile using the custom mixin'''
+            return self.get_logged_in_profile()
+
+
+class ShowOwnProfileView(MyLoginRequiredMixin, DetailView):
+    '''showing logged in users page'''
+    model = Profile
+    template_name = "mini_insta/show_profile.html"
+    context_object_name = 'profile'
+
+    def get_object(self):
+            '''get the profile using the custom mixin'''
+            return self.get_logged_in_profile()
+
+
+class CreateProfileView(CreateView):
+    '''creation of a new user and profile'''
+
+    model = Profile
+    form_class = CreateProfileForm
+    template_name = "mini_insta/create_profile_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_creation_form'] = UserCreationForm()
+        return context
+
+    def form_valid(self, form):
+        '''create user and log them in'''
+        user_creation_form = UserCreationForm(self.request.POST)
+
+        if not user_creation_form.is_valid():
+            return self.render_to_response(
+                self.get_context_data(form=form)
+            )
+
+        user = user_creation_form.save()
+
+        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+        form.instance.user = user
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        '''go to new profile'''
+        return reverse('show_profile', kwargs={'pk': self.object.pk})

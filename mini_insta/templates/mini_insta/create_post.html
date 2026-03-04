@@ -1,6 +1,9 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+
+{% if request.user.is_authenticated %}
+
 <h1>Create a New Post</h1>
 
 <form action="{% url 'create_post' profile.pk %}" method="POST" enctype="multipart/form-data">
@@ -18,4 +21,9 @@
         <button type="button">Cancel</button>
     </a>
 </form>
+
+<p>You must be logged in to create a post</p>
+<li><a href="{% url 'login' %}">Login</a></li>
+{% endif %}
+
 {% endblock %}
