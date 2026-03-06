@@ -3,14 +3,15 @@
 # Description: contains the views for two profile views
 
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Profile, Post, Photo
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from .models import Profile, Post, Photo, Like, Follow
 from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm, CreateProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm 
 from django.contrib.auth.models import User 
-from django.contrib.auth import login
+from django.contrib.auth import login   
 
 class MyLoginRequiredMixin(LoginRequiredMixin):
 
@@ -36,6 +37,18 @@ class ProfileDetailView(DetailView):
     model = Profile
     template_name = "mini_insta/show_profile.html"
     context_object_name = 'profile'
+
+    def get_context_data(self, **kwargs):
+        '''override for following logic'''
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            my_profile = Profile.objects.filter(user=self.request.user).first()
+            if my_profile:
+                context['is_following'] = Follow.objects.filter(
+                    profile=self.get_object(), follower_profile=my_profile
+                ).exists()
+                context['is_own_profile'] = (my_profile == self.get_object())
+        return context
 
 
 class PostDetailView(DetailView):
@@ -136,23 +149,18 @@ class ShowFollowingDetailView(DetailView):
     context_object_name = 'profile'
 
 class PostFeedListView(MyLoginRequiredMixin, ListView):
-    '''handles the post feed'''
+    '''view for post feed'''
     template_name = "mini_insta/show_feed.html"
     context_object_name = "posts"
 
     def get_queryset(self):
-        pk = self.get_logged_in_profile()
-        profile = Profile.objects.get(pk=pk)
+        profile = self.get_logged_in_profile()
         return profile.get_post_feed()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pk = self.get_logged_in_profile()
-        context['profile'] = Profile.objects.get(pk=pk)
+        context['profile'] = self.get_logged_in_profile()
         return context
-    def get_object(self):
-        '''get the profile using the custom mixin'''
-        return self.get_logged_in_profile()
 
 
 class SearchView(MyLoginRequiredMixin, ListView):
@@ -196,14 +204,13 @@ class SearchView(MyLoginRequiredMixin, ListView):
 
 
 class ShowOwnProfileView(MyLoginRequiredMixin, DetailView):
-    '''showing logged in users page'''
+    '''show page of logged in user'''
     model = Profile
     template_name = "mini_insta/show_profile.html"
     context_object_name = 'profile'
 
     def get_object(self):
-            '''get the profile using the custom mixin'''
-            return self.get_logged_in_profile()
+        return self.get_logged_in_profile()
 
 
 class CreateProfileView(CreateView):
@@ -238,3 +245,47 @@ class CreateProfileView(CreateView):
     def get_success_url(self):
         '''go to new profile'''
         return reverse('show_profile', kwargs={'pk': self.object.pk})
+
+
+class FollowView(MyLoginRequiredMixin, TemplateView):
+    ''' follow another profile.'''
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Create a Follow relationship and redirect.'''
+        other_profile = Profile.objects.get(pk=self.kwargs['pk'])
+        my_profile = self.get_logged_in_profile()
+        if my_profile != other_profile:
+            Follow.objects.get_or_create(profile=other_profile, follower_profile=my_profile)
+        return redirect('show_profile', pk=other_profile.pk)
+
+
+class DeleteFollowView(MyLoginRequiredMixin, TemplateView):
+    ''' unfollowing another profile.'''
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Remove a Follow relationship and redirect.'''
+        other_profile = Profile.objects.get(pk=self.kwargs['pk'])
+        my_profile = self.get_logged_in_profile()
+        Follow.objects.filter(profile=other_profile, follower_profile=my_profile).delete()
+        return redirect('show_profile', pk=other_profile.pk)
+
+
+class LikeView(MyLoginRequiredMixin, TemplateView):
+    '''like a post.'''
+
+    def dispatch(self, request, *args, **kwargs):
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        my_profile = self.get_logged_in_profile()
+        if my_profile != post.profile:
+            Like.objects.get_or_create(post=post, profile=my_profile)
+        return redirect('show_post', pk=post.pk)
+
+
+class DeleteLikeView(MyLoginRequiredMixin, TemplateView):
+    '''unliking a post.'''
+
+    def dispatch(self, request, *args, **kwargs):
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        my_profile = self.get_logged_in_profile()
+        Like.objects.filter(post=post, profile=my_profile).delete()
+        return redirect('show_post', pk=post.pk)

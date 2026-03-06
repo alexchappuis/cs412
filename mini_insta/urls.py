@@ -3,7 +3,7 @@
 # Description: URl paths
 
 from django.urls import path
-from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView, UpdatePostView, DeletePostView, ShowFollowersDetailView,ShowFollowingDetailView, PostFeedListView, SearchView, CreateProfileView
+from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView, UpdatePostView, DeletePostView, ShowFollowersDetailView,ShowFollowingDetailView, PostFeedListView, SearchView, CreateProfileView, ShowOwnProfileView, FollowView, DeleteFollowView, LikeView,DeleteLikeView
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 
@@ -19,9 +19,15 @@ urlpatterns = [
     path("profile/<int:pk>/followers", ShowFollowersDetailView.as_view(), name="show_followers"),
     path("profile/<int:pk>/following", ShowFollowingDetailView.as_view(), name="show_following"),
     path("profile/feed", PostFeedListView.as_view(), name="show_feed"),
+    path("profile/", ShowOwnProfileView.as_view(), name="show_own_profile"),
     path("profile/search", SearchView.as_view(), name="search"),
     path("login/", auth_views.LoginView.as_view(template_name='mini_insta/login.html'), name="login"),
     path("logout/", auth_views.LogoutView.as_view(next_page='logout_confirmation'), name="logout"),
     path("logout_confirmation/", TemplateView.as_view(template_name='mini_insta/logged_out.html'), name="logout_confirmation"),
     path("create_profile/", CreateProfileView.as_view(), name="create_profile"),
+    path("profile/<int:pk>/follow", FollowView.as_view(), name="follow"),
+    path("profile/<int:pk>/delete_follow", DeleteFollowView.as_view(), name="delete_follow"),
+    path("post/<int:pk>/like", LikeView.as_view(), name="like"),
+    path("post/<int:pk>/delete_like", DeleteLikeView.as_view(), name="delete_like"),
+
 ]

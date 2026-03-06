@@ -25,8 +25,18 @@
         <a href="{% url 'show_following' profile.pk %}">Following: {{ profile.get_num_following }}</a>
       </p>
 
+      {% if request.user.is_authenticated and not is_own_profile %}
+        {% if is_following %}
+            <a href="{% url 'delete_follow' profile.pk %}">Unfollow</a>
+        {% else %}
+            <a href="{% url 'follow' profile.pk %}">Follow</a>
+        {% endif %}
+      {% endif %}
+
       <p>
-        <a href="{% url 'update_profile' profile.pk %}">Update Profile</a>
+        {% if request.user == profile.user %}
+        <a href="{% url 'update_profile' %}">Update Profile</a>
+         {% endif %}
       </p>
     </div>
 
@@ -39,9 +49,10 @@
 
 <div class="posts-grid">
   {% if request.user == profile.user %}
-  <p><a href="{% url 'update_profile' %}">Update Profile</a></p>
-  <p><a href="{% url 'create_post' %}">Create Post</a></p>
-  {% endif %}
+  <p>
+    <a href="{% url 'update_profile' %}">Update Profile</a>
+  </p>
+{% endif %}
   {% for post in profile.get_all_posts %}
     <div class="post-card">
 
