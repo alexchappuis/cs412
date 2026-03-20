@@ -1,0 +1,68 @@
+<!-- voter.html -->
+<!-- alexander chappuis -->
+<!-- 3/20/2026 -->
+
+
+
+
+{% extends 'voter_analytics/base.html' %}
+ 
+{% block title %}Voter Detail{% endblock %}
+ 
+{% block content %}
+ 
+<h1>{{ voter.first_name }} {{ voter.last_name }}</h1>
+ 
+<table>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Street Address</th>
+        <th>Zip Code</th>
+        <th>Date of Birth</th>
+        <th>Date of Registration</th>
+        <th>Party Affiliation</th>
+        <th>Precinct Number</th>
+        <th>Voter Score</th>
+    </tr>
+    <tr>
+        <td>{{ voter.first_name }}</td>
+        <td>{{ voter.last_name }}</td>
+        <td>{{ voter.street_number }} {{ voter.street_name }}{% if voter.apartment_number %}, Apt {{ voter.apartment_number }}{% endif %}</td>
+        <td>{{ voter.zip_code }}</td>
+        <td>{{ voter.date_of_birth }}</td>
+        <td>{{ voter.date_of_registration }}</td>
+        <td>{{ voter.party_affiliation }}</td>
+        <td>{{ voter.precinct_number }}</td>
+        <td>{{ voter.voter_score }}</td>
+    </tr>
+</table>
+ 
+<h3>Election Participation</h3>
+<table>
+    <tr>
+        <th>2020 State Election</th>
+        <th>2021 Town Election</th>
+        <th>2021 Primary Election</th>
+        <th>2022 General Election</th>
+        <th>2023 Town Election</th>
+    </tr>
+    <tr>
+        <td>{{ voter.v20state }}</td>
+        <td>{{ voter.v21town }}</td>
+        <td>{{ voter.v21primary }}</td>
+        <td>{{ voter.v22general }}</td>
+        <td>{{ voter.v23town }}</td>
+    </tr>
+</table>
+ 
+<p>
+    <a href="https://www.google.com/maps?q={{ voter.street_number }}+{{ voter.street_name }},+Newton,+MA+{{ voter.zip_code }}" 
+       target="_blank">Google Maps link to Location</a>
+</p>
+ 
+<p>
+    <a href="{% url 'voters' %}">Back to Voters</a>
+</p>
+ 
+{% endblock %}

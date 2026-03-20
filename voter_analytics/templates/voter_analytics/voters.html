@@ -1,0 +1,38 @@
+<!-- voters.html -->
+<!-- alexander chappuis -->
+<!-- 3/20/2026 -->
+
+{% extends 'voter_analytics/base.html' %}
+ 
+{% block title %}Voters{% endblock %}
+ 
+{% block content %}
+ 
+<h1>Showing All Voters</h1>
+ 
+{% include "voter_analytics/filter_form.html" %}
+ 
+<table>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Street Address</th>
+        <th>Date of Birth</th>
+        <th>Party Affiliation</th>
+        <th>Voter Score</th>
+    </tr>
+ 
+    {% for voter in voters %}
+    <tr>
+        <td><a href="{% url 'voter' voter.pk %}">{{ voter.first_name }}</a></td>
+        <td><a href="{% url 'voter' voter.pk %}">{{ voter.last_name }}</a></td>
+        <td>{{ voter.street_number }} {{ voter.street_name }}{% if voter.apartment_number %}, Apt {{ voter.apartment_number }}{% endif %}</td>
+        <td>{{ voter.date_of_birth }}</td>
+        <td>{{ voter.party_affiliation }}</td>
+        <td>{{ voter.voter_score }}</td>
+    </tr>
+    {% endfor %}
+</table>
+ 
+{% endblock %}
+ 

@@ -1,0 +1,22 @@
+<!-- base.html -->
+<!-- alexander chappuis -->
+<!-- 3/20/2026 -->
+
+
+<html>
+<head>
+    <title>{% block title %}Voter Analytics{% endblock %}</title>
+</head>
+<body>
+ 
+    <nav>
+        <a href="{% url 'voters' %}">Voters</a> |
+        <a href="{% url 'graphs' %}">Graphs</a>
+    </nav>
+    <hr>
+ 
+    {% block content %}
+    {% endblock %}
+ 
+</body>
+</html>

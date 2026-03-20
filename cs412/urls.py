@@ -29,7 +29,8 @@ urlpatterns = [
     path("restaurant/", include("restaurant.urls")),
    # path("blog/", include("blog.urls")),
     path("mini_insta/", include("mini_insta.urls")),
-
+    path("marathon_analytics/", include("marathon_analytics.urls")),
+     path("voter_analytics/", include("voter_analytics.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

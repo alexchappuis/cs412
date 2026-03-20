@@ -1,0 +1,63 @@
+<form method="get" action="">
+    <table>
+        <tr>
+            <th>Select Party Affiliation:</th>
+            <td>
+                <select name="party_affiliation">
+                    <option value="" selected disabled hidden>Choose</option>
+                    {% for party in party_affiliations %}
+                        <option value="{{ party }}" {% if party == selected_party %}selected{% endif %}>{{ party }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Select Voter Score:</th>
+            <td>
+                <select name="voter_score">
+                    <option value="" selected disabled hidden>Choose</option>
+                    {% for score in voter_scores %}
+                        <option value="{{ score }}" {% if score|stringformat:"d" == selected_voter_score %}selected{% endif %}>{{ score }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Min Year of Birth:</th>
+            <td>
+                <select name="min_year">
+                    <option value="" selected disabled hidden>Choose</option>
+                    {% for year in years %}
+                        <option value="{{ year }}" {% if year|stringformat:"d" == selected_min_year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Max Year of Birth:</th>
+            <td>
+                <select name="max_year">
+                    <option value="" selected disabled hidden>Choose</option>
+                    {% for year in years %}
+                        <option value="{{ year }}" {% if year|stringformat:"d" == selected_max_year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Previous Election Participation</th>
+            <td>
+                <input type="checkbox" name="v20state" {% if selected_v20state %}checked{% endif %}>v20state<br>
+                <input type="checkbox" name="v21town" {% if selected_v21town %}checked{% endif %}>v21town<br>
+                <input type="checkbox" name="v21primary" {% if selected_v21primary %}checked{% endif %}>v21primary<br>
+                <input type="checkbox" name="v22general" {% if selected_v22general %}checked{% endif %}>v22general<br>
+                <input type="checkbox" name="v23town" {% if selected_v23town %}checked{% endif %}>v23town<br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="Submit">
+            </td>
+        </tr>
+    </table>
+</form>
