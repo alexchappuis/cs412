@@ -52,3 +52,4 @@ class Comment(models.Model):
 
         comments = Comment.objects.filter(article=self)
         return comments
+

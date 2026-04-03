@@ -1,0 +1,11 @@
+{% extends "dadjokes/base.html" %}
+
+{% block title %}Picture #{{ object.pk }}{% endblock %}
+{% block header %}Picture #{{ object.pk }}{% endblock %}
+
+{% block content %}
+<div class="joke">
+    <img src="{{ picture.image_url }}" alt="Funny picture">
+    <br><small>Contributed by {{ object.jokester }} | {{ object.joke_time }}</small>
+</div>
+{% endblock %}

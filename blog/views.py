@@ -166,3 +166,14 @@ class UserRegistrationView(CreateView):
     def get_success_url(self):
         '''The URL to redirect to after creating a new User.'''
         return reverse('login')
+
+
+
+### REST API VIEW ###
+
+from rest_framework import generics
+from .serializers import *
+
+class ArticleListAPIView(generic.ListAPIView):
+    queryset = Articles.objects.all()
+    

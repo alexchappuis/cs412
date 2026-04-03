@@ -1,0 +1,21 @@
+{% extends "dadjokes/base.html" %}
+
+{% block title %}Random Dad Joke{% endblock %}
+{% block header %}Random Dad Joke{% endblock %}
+
+{% block content %}
+{% if joke %}
+    <div>
+        <p>{{ joke.joke }}</p>
+        <small>— {{ joke.jokester }}</small>
+    </div>
+{% endif %}
+
+{% if picture %}
+    <img src="{{ picture.image_url }}" alt="Funny picture">
+    <br><small> by: {{ picture.jokester }}</small>
+{% endif %}
+
+<br><br>
+<a href="{% url 'random' %}">Get another!</a>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "dadjokes/base.html" %}
+
+{% block title %}All Jokes{% endblock %}
+{% block header %}All Jokes{% endblock %}
+
+{% block content %}
+{% for joke in object_list %}
+    <div>
+        <p><a href="{% url 'joke' joke.pk %}">{{ joke.joke }}</a></p>
+        <small>— {{ joke.jokester }} | {{ joke.joke_time }}</small>
+    </div>
+{% endfor %}
+{% endblock %}

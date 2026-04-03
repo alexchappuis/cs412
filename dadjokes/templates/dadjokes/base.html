@@ -1,0 +1,17 @@
+{% load static %}
+
+
+<html>
+<head>
+    <title>{% block title %}Dad Jokes{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'random' %}">Random</a>
+        <a href="{% url 'jokes' %}">All Jokes</a>
+        <a href="{% url 'pictures' %}">All Pictures</a>
+    </nav>
+    <h1>{% block header %}Dad Jokes{% endblock %}</h1>
+    {% block content %}{% endblock %}
+</body>
+</html>

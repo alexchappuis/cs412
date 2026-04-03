@@ -1,0 +1,11 @@
+{% extends "dadjokes/base.html" %}
+
+{% block title %}Joke #{{ object.pk }}{% endblock %}
+{% block header %}Joke #{{ object.pk }}{% endblock %}
+
+{% block content %}
+<div>
+    <p>{{ object.joke }}</p>
+    <small>— {{ joke.jokester }} | {{ joke.joke_time }}</small>
+</div>
+{% endblock %}
