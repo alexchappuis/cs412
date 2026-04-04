@@ -11,4 +11,4 @@ class JokeSerializer(serializers.ModelSerializer):
 class PictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Picture
-        fields = ['id', 'picture', 'jokester', 'joke_time']
+        fields = ['id', 'image_url', 'jokester', 'joke_time']
