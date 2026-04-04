@@ -1,16 +1,9 @@
+import random
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from . models import Joke, Picture
+from .models import Joke, Picture
 from rest_framework import generics
-from .serializers import *
-import random
-from rest_framework.views import APIView
 from .serializers import JokeSerializer, PictureSerializer
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from .serializers import JokeSerializer, PictureSerializer  
-
 
 
 
@@ -73,9 +66,10 @@ class RandomJokeAPIView(generics.RetrieveAPIView):
         return random.choice(jokes)
 
 
-class RandomPictureAPIView(generics.RetrieveUpdateDestroyAPIView):
+class RandomPictureAPIView(generics.RetrieveAPIView):
     serializer_class = PictureSerializer
+
     def get_object(self):
-        jokes = list(Joke.objects.all())
-        return random.choice(jokes)
+        pictures = list(Picture.objects.all())
+        return random.choice(pictures)
 
