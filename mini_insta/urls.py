@@ -3,7 +3,7 @@
 # Description: URl paths
 
 from django.urls import path
-from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView, UpdatePostView, DeletePostView, ShowFollowersDetailView,ShowFollowingDetailView, PostFeedListView, SearchView, CreateProfileView, ShowOwnProfileView, FollowView, DeleteFollowView, LikeView, DeleteLikeView, ProfileListAPIView, ProfileDetailAPIView, ProfilePostsAPIView, ProfileFeedAPIView, CreatePostAPIView
+from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView, UpdatePostView, DeletePostView, ShowFollowersDetailView,ShowFollowingDetailView, PostFeedListView, SearchView, CreateProfileView, ShowOwnProfileView, FollowView, DeleteFollowView, LikeView, DeleteLikeView, ProfileListAPIView, ProfileDetailAPIView, ProfilePostsAPIView, ProfileFeedAPIView, CreatePostAPIView, LoginAPIView
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 
@@ -34,4 +34,6 @@ urlpatterns = [
     path('api/profiles/<int:pk>/posts/', ProfilePostsAPIView.as_view(), name='api_profile_posts'),
     path('api/profiles/<int:pk>/feed/', ProfileFeedAPIView.as_view(), name='api_profile_feed'),
     path('api/profiles/<int:pk>/posts/create/', CreatePostAPIView.as_view(), name='api_create_post'),
+    path('api/login/', LoginAPIView.as_view(), name='api_login'),
+
 ]

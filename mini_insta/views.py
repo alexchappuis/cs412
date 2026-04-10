@@ -14,6 +14,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login   
 from rest_framework import generics
 from .serializers import ProfileSerializer, PostSerializer, PhotoSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
 
 
 class MyLoginRequiredMixin(LoginRequiredMixin):
@@ -297,33 +304,85 @@ class DeleteLikeView(MyLoginRequiredMixin, TemplateView):
 ## API Views
 
 class ProfileListAPIView(generics.ListCreateAPIView):
+    '''list all profiles'''
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 class ProfileDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    '''retrieve one profile by primary key'''
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+class ProfilePostsAPIView(generics.ListAPIView):
+    '''list all posts for a profile'''
+    serializer_class = PostSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        return Post.objects.filter(profile__pk=self.kwargs['pk']).order_by('-timestamp')
+
 
 class ProfileFeedAPIView(generics.ListAPIView):
+    '''list the feed for one profile'''
     serializer_class = PostSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         profile = Profile.objects.get(pk=self.kwargs['pk'])
         return profile.get_post_feed()
 
-class ProfilePostsAPIView(generics.ListAPIView):
-    serializer_class = PostSerializer
-
-    def get_queryset(self):
-        return Post.objects.filter(profile__pk=self.kwargs['pk'])
 
 class CreatePostAPIView(generics.CreateAPIView):
+    '''create a new post for the authenticated user'''
     serializer_class = PostSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        '''add the new post to the logged in users profile'''
+        profile = Profile.objects.get(user=self.request.user)
         post = serializer.save(profile=profile)
 
         image_url = self.request.data.get('image_url', '')
         if image_url:
             Photo.objects.create(post=post, image_url=image_url)
+
+
+class LoginAPIView(APIView):
+
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        '''authenticate the user and return their token '''
+
+        user = authenticate(
+            request,
+            username=request.data.get('username'),
+            password=request.data.get('password'),
+        )
+        print(f"LoginAPIView.post(): user={user}")
+
+        if user:
+            login(request, user)
+            token, created = Token.objects.get_or_create(user=user)
+            profile = Profile.objects.get(user=user)
+
+            return Response({
+                'token': token.key,
+                'profile_id': profile.id,
+                'username': profile.username,
+            })
+
+        return Response(
+            {'error': 'invalid '},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
