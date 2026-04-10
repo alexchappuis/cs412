@@ -3,7 +3,7 @@
 # Description: URl paths
 
 from django.urls import path
-from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView, UpdatePostView, DeletePostView, ShowFollowersDetailView,ShowFollowingDetailView, PostFeedListView, SearchView, CreateProfileView, ShowOwnProfileView, FollowView, DeleteFollowView, LikeView,DeleteLikeView
+from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView, UpdatePostView, DeletePostView, ShowFollowersDetailView,ShowFollowingDetailView, PostFeedListView, SearchView, CreateProfileView, ShowOwnProfileView, FollowView, DeleteFollowView, LikeView, DeleteLikeView, ProfileListAPIView, ProfileDetailAPIView, ProfilePostsAPIView, ProfileFeedAPIView, CreatePostAPIView
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 
@@ -29,5 +29,9 @@ urlpatterns = [
     path("profile/<int:pk>/delete_follow", DeleteFollowView.as_view(), name="delete_follow"),
     path("post/<int:pk>/like", LikeView.as_view(), name="like"),
     path("post/<int:pk>/delete_like", DeleteLikeView.as_view(), name="delete_like"),
-
+    path('api/profiles/', ProfileListAPIView.as_view(), name='api_profile_list'),
+    path('api/profiles/<int:pk>/', ProfileDetailAPIView.as_view(), name='api_profile_detail'),
+    path('api/profiles/<int:pk>/posts/', ProfilePostsAPIView.as_view(), name='api_profile_posts'),
+    path('api/profiles/<int:pk>/feed/', ProfileFeedAPIView.as_view(), name='api_profile_feed'),
+    path('api/profiles/<int:pk>/posts/create/', CreatePostAPIView.as_view(), name='api_create_post'),
 ]

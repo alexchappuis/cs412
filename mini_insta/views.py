@@ -12,6 +12,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm 
 from django.contrib.auth.models import User 
 from django.contrib.auth import login   
+from rest_framework import generics
+from .serializers import ProfileSerializer, PostSerializer, PhotoSerializer
+
 
 class MyLoginRequiredMixin(LoginRequiredMixin):
 
@@ -289,3 +292,38 @@ class DeleteLikeView(MyLoginRequiredMixin, TemplateView):
         my_profile = self.get_logged_in_profile()
         Like.objects.filter(post=post, profile=my_profile).delete()
         return redirect('show_post', pk=post.pk)
+
+
+## API Views
+
+class ProfileListAPIView(generics.ListCreateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+class ProfileDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+class ProfileFeedAPIView(generics.ListAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        return profile.get_post_feed()
+
+class ProfilePostsAPIView(generics.ListAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        return Post.objects.filter(profile__pk=self.kwargs['pk'])
+
+class CreatePostAPIView(generics.CreateAPIView):
+    serializer_class = PostSerializer
+
+    def perform_create(self, serializer):
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        post = serializer.save(profile=profile)
+
+        image_url = self.request.data.get('image_url', '')
+        if image_url:
+            Photo.objects.create(post=post, image_url=image_url)
