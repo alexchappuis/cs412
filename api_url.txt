@@ -1,1 +1,1 @@
-https://cs-webapps.bu.edu/alexc26/cs412/dadjokes/api
+https://cs-webapps.bu.edu/alexc26/mini_insta/api
