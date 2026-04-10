@@ -1,6 +1,15 @@
 from rest_framework import serializers
 from .models import Profile, Post, Photo
 
+class PhotoSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Photo
+        fields = ['id', 'image_url']
+
+    def get_image_url(self, obj):
+        return obj.get_image_url()
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,12 +24,3 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ['id', 'profile', 'caption', 'timestamp', 'photos']
         read_only_fields = ['profile', 'timestamp']
 
-class PhotoSerializer(serializers.ModelSerializer):
-    image_url = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Photo
-        fields = ['id', 'image_url']
-
-    def get_image_url(self, obj):
-        return obj.get_image_url()
