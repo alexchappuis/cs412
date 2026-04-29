@@ -1,0 +1,120 @@
+<!-- This is the main trip builder page it has info about the trail at the top and then displays the weather from the API
+ It then for each seciton displays the items in that section and allows the user to select and then add to pack. if there isnt anything there or you want to add more there is a 
+ button that goes to the gear_form template to add gear
+  -->
+
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>{{ trip.trail.name }}</h1>
+
+<div class="card">
+  <p><strong>Trail:</strong> <a href="{% url 'project:trail_detail' trip.trail.pk %}">{{ trip.trail.name }}</a></p>
+  <p><strong>Dates:</strong> {{ trip.start_date }} to {{ trip.end_date }} ({{ nights }} nights)</p>
+  <p><strong>Mileage total:</strong> {{ total_mileage }}</p>
+  <p><strong>Daily Mileage (estimated):</strong> {{ daily_mileage }}</p>
+  <p><strong>Status:</strong> {{ trip.status }}</p>
+  {% if trip.notes %}<p>{{ trip.notes }}</p>{% endif %}
+</div>
+
+{% if weather %}
+<div class="weather-banner">
+  <h2>🌤️ Forecast</h2>
+  <div class="weather-stats">
+    <div class="weather-stat">
+      <div class="weather-num">{{ weather.temp_high }}°F</div>
+      <div class="weather-label">High</div>
+    </div>
+    <div class="weather-stat">
+      <div class="weather-num">{{ weather.temp_low }}°F</div>
+      <div class="weather-label">Low</div>
+    </div>
+    <div class="weather-stat">
+      <div class="weather-num">{{ weather.precip_chance }}%</div>
+      <div class="weather-label">Rain</div>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="card">
+  <p>Weather forecast unavailable (trip may be too far in the future).</p>
+</div>
+{% endif %}
+
+<a href="{% url 'project:trip_update' trip.pk %}" class="btn">Edit Trip</a>
+<a href="{% url 'project:trip_delete' trip.pk %}" class="btn">Delete Trip</a>
+
+<h2>Pack List · {{ total_weight_lbs }} lbs total</h2>
+{% for section in sections %}
+<div class="gear-section" id="section-{{ section.category|slugify }}">
+  <h3>{{ section.label }}</h3>
+  {% if section.recommended %}
+  <p class="rec-note">⭐ Recommended: <strong>{{ section.recommended.name }}</strong></p>
+{% elif section.needs_purchase %}
+  <p class="rec-note buy-note">🛒 {{ section.purchase_message }}</p>
+{% endif %}
+
+
+  <form method="post" action="{% url 'project:add_pack_items' trip.pk %}">
+    {% csrf_token %}
+    <input type="hidden" name="section" value="{{ section.category|slugify }}">
+
+    <table>
+      <tr>
+        <th></th>
+        <th>Item</th>
+        <th>Weight</th>
+        <th>Temp</th>
+      </tr>
+      {% for item in section.items %}
+      <tr {% if section.recommended.pk == item.pk %}class="recommended"{% endif %}>
+        <td>
+          {% if item.pk in section.packed_ids %}
+            <span class="in-pack">✓</span>
+          {% else %}
+            <input type="checkbox" name="gear_ids" value="{{ item.pk }}">
+          {% endif %}
+        </td>
+        <td>
+          {{ item.display_name }}
+          {% if section.recommended.pk == item.pk %}<span class="rec-tag">⭐ Recommended</span>{% endif %}
+        </td>
+        <td>{{ item.weight_display }}</td>
+        <td>{% if item.temp_rating_f %}{{ item.temp_rating_f }}°F{% else %}—{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <button type="submit" class="btn">Add Selected to Pack</button>
+    <a href="{% url 'project:gear_create' %}?category={{ section.category }}&next=/project/trips/{{ trip.pk }}/" class="btn">
+      + Add {{ section.label }} Item
+    </a>
+  </form>
+</div>
+{% endfor %}
+
+<h2>Currently Packed - Dry Weight: {{ total_weight_lbs }} lbs total</h2>
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Weight</th>
+    <th>Packed</th>
+    <th></th>
+  </tr>
+  {% for item in pack_items %}
+  <tr>
+    <td {% if item.is_packed %}class="packed"{% endif %}>{{ item.gear_item.display_name }}</td>
+    <td>{{ item.gear_item.weight_display }}</td>
+    <td>
+      <a href="{% url 'project:toggle_packed' item.pk %}">
+        {% if item.is_packed %}✅{% else %}⬜{% endif %}
+      </a>
+    </td>
+    <td><a href="{% url 'project:remove_pack_item' item.pk %}">🗑️</a></td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="4">Nothing packed yet.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

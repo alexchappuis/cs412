@@ -1,0 +1,44 @@
+<!-- Lists all the gear the user owns and keeps track of total weight. -->
+
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>My Gear Room</h1>
+
+<p>{{ gear_items|length }} items · {{ total_weight_lbs }} lbs / {{ total_weight_oz }} oz total</p>
+
+<form method="get" style="display:inline;">
+  <select name="category" onchange="this.form.submit()">
+    <option value="">All categories</option>
+    {% for value, label in categories %}
+      <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+</form>
+<a href="{% url 'project:gear_create' %}" class="btn">+ Add Gear</a>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Category</th>
+    <th>Weight</th>
+    <th>Temp Rating</th>
+    <th>Rain/Snow</th>
+  </tr>
+  {% for item in gear_items %}
+  <tr>
+    <td><a href="{% url 'project:gear_detail' item.pk %}">{{ item.display_name }}</a></td>
+    <td>{{ item.get_category_display }}</td>
+    <td>{{ item.weight_display }}</td>
+    <td>{% if item.temp_rating_f %}{{ item.temp_rating_f }}°F{% else %}—{% endif %}</td>
+    <td>
+      {% if item.is_rain_gear %}Rain Gear{% endif %}
+      {% if item.is_snow_gear %}Snow Gear{% endif %}
+    </td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="5">No gear yet. Add some!</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

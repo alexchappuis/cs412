@@ -1,0 +1,43 @@
+{% load static %}
+<!doctype html>
+<html>
+  <head>
+    <title>PackBuddy</title>
+    <link rel="stylesheet" href="{% static 'styles-project.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <div>
+        <h1><a href="{% url 'project:landing' %}">PackBuddy</a></h1>
+        <nav>
+          {% if request.user.is_authenticated %}
+            <a href="{% url 'project:landing' %}">Home</a>
+            <a href="{% url 'project:trip_list' %}">My Trips</a>
+            <a href="{% url 'project:gear_list' %}">My Gear</a>
+            <a href="{% url 'project:trail_list' %}">My Trails</a>
+            <a href="{% url 'project:profile_detail' request.user.project_profile.pk %}">My Profile</a>
+            <form action="{% url 'project:logout' %}" method="POST" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit">Logout</button>
+            </form>
+          {% else %}
+            <a href="{% url 'project:login' %}">Login</a>
+            | <a href="{% url 'project:create_profile' %}">Sign Up</a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+
+    <footer>
+      <div>PackBuddy</div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Logged Out</h1>
+
+<div class="card">
+  <p>You have been logged out.</p>
+  <a href="{% url 'project:login' %}" class="btn">Log back in</a>
+</div>
+{% endblock %}

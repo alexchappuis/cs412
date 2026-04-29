@@ -32,6 +32,7 @@ urlpatterns = [
     path("marathon_analytics/", include("marathon_analytics.urls")),
     path("voter_analytics/", include("voter_analytics.urls")),
     path("dadjokes/", include("dadjokes.urls")),
+    path("project/", include("project.urls")),
 
 ]
 

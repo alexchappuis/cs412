@@ -1,0 +1,22 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Login</h1>
+
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+
+    {% for field in form %}
+    <div>
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn">Login</button>
+  </form>
+
+  <p style="margin-top:16px;">Don't have an account? <a href="{% url 'project:create_profile' %}">Sign up</a></p>
+</div>
+{% endblock %}

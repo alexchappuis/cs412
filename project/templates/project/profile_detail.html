@@ -1,0 +1,15 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>{{ profile.user.username }}'s Profile</h1>
+
+<div class="card">
+  <p><strong>Home Base:</strong> {{ profile.home_location }}</p>
+  <p><strong>Experience:</strong> {{ profile.experience_level }}</p>
+  <p><strong>Coordinates:</strong> {{ profile.home_latitude }}, {{ profile.home_longitude }}</p>
+  <p><strong>Gear Items:</strong> {{ profile.gearitem_set.count }}</p>
+  <p><strong>Trips:</strong> {{ profile.trip_set.count }}</p>
+</div>
+
+<a href="{% url 'project:profile_update' %}" class="btn">Edit Profile</a>
+{% endblock %}

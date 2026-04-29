@@ -1,0 +1,28 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>{{ trail.name }}</h1>
+
+<div class="card">
+  <p><strong>Region:</strong> {{ trail.region }}</p>
+  <p><strong>Distance:</strong> {{ trail.distance_miles }} miles</p>
+  <p><strong>Elevation Gain:</strong> {{ trail.elevation_gain_ft }} ft</p>
+  <p><strong>Difficulty:</strong> {{ trail.difficulty }}</p>
+  <p><strong>Loop:</strong> {% if trail.is_loop %}Yes{% else %}No{% endif %}</p>
+  {% if trail.description %}
+    <p>{{ trail.description }}</p>
+  {% endif %}
+</div>
+
+<div id="map" style="height:300px;margin:16px 0;"></div>
+<a href="{% url 'project:trail_update' trail.pk %}" class="btn">Edit</a>
+<a href="{% url 'project:trail_delete' trail.pk %}" class="btn">Delete</a>
+<a href="{% url 'project:trip_create' %}" class="btn">Plan a trip here</a>
+<a href="{% url 'project:trail_list' %}">Back to trails</a>
+
+<script>
+  var map = L.map('map').setView([{{ trail.latitude }}, {{ trail.longitude }}], 12);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+  L.marker([{{ trail.latitude }}, {{ trail.longitude }}]).bindPopup('{{ trail.name|escapejs }}').addTo(map);
+</script>
+{% endblock %}

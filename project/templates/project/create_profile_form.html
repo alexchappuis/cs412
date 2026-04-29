@@ -1,0 +1,67 @@
+<!-- This templates handles first time user creation -->
+
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Create Account</h1>
+
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+
+    <h3>Account Info</h3>
+    {% for field in user_creation_form %}
+    <div>
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {% if field.errors %}
+        <p style="color:red;font-size:13px;">{{ field.errors.0 }}</p>
+      {% endif %}
+      {% if field.help_text %}
+        <p style="color:#8b7d6b;font-size:12px;">{{ field.help_text }}</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    <h3>Profile Info</h3>
+
+    <label>Experience Level</label>
+    {{ form.experience_level }}
+
+    <label>Home Location</label>
+    <input type="text" name="home_location" id="home-location" placeholder="e.g. Boston, MA">
+    <button type="button" id="locate-btn" class="btn">📍 Here</button>
+
+    <input type="hidden" name="home_latitude" id="home-lat" value="">
+    <input type="hidden" name="home_longitude" id="home-lng" value="">
+    <p id="coords-display">No location set</p>
+
+    <button type="submit" class="btn">Create Account</button>
+  </form>
+</div>
+
+<script>
+document.getElementById('locate-btn').addEventListener('click', function() { //on click of here button we get lat and long coords and then get the city 
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    var lat = pos.coords.latitude;
+    var lng = pos.coords.longitude;
+    document.getElementById('home-lat').value = lat;
+    document.getElementById('home-lng').value = lng;
+    document.getElementById('coords-display').textContent = lat.toFixed(4) + ', ' + lng.toFixed(4);
+
+    fetch('https://nominatim.openstreetmap.org/reverse?lat=' + lat + '&lon=' + lng + '&format=json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var city = data.address.city || data.address.town || data.address.village || '';
+        var state = data.address.state || '';
+        if (city && state) {
+          document.getElementById('home-location').value = city + ', ' + state;
+        }
+      });
+  }, function(err) {
+    alert('Could not get location');
+  });
+});
+</script>
+{% endblock %}

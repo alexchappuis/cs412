@@ -1,0 +1,14 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Delete Trip</h1>
+
+<div class="card">
+  <p>Are you sure you want to delete your trip to <strong>{{ object.trail.name }}</strong>?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn">Yes, delete</button>
+    <a href="{% url 'project:trip_detail' object.pk %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

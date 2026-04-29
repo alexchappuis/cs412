@@ -1,0 +1,42 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Trail</h1>
+
+<div class="card">
+  <p><strong>Quick fill:</strong> Paste a Google Maps URL to auto-fill coordinates</p>
+  <input type="text" id="maps-url" placeholder="https://www.google.com/maps/place/...">
+  <button type="button" id="parse-btn" class="btn">Extract Coordinates</button>
+  <p id="parse-result"></p>
+</div>
+
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div>
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn">Save</button>
+    <a href="{% url 'project:trail_list' %}">Cancel</a>
+  </form>
+</div>
+
+<script>
+document.getElementById('parse-btn').addEventListener('click', function() {
+  var url = document.getElementById('maps-url').value;
+  var match = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+  if (match) {
+    var lat = match[1];
+    var lng = match[2];
+    document.getElementById('id_latitude').value = lat;
+    document.getElementById('id_longitude').value = lng;
+    document.getElementById('parse-result').textContent = '✅ Filled in: ' + lat + ', ' + lng;
+  } else {
+    document.getElementById('parse-result').textContent = '❌ Could not find coordinates in that URL';
+  }
+});
+</script>
+{% endblock %}

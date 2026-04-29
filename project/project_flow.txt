@@ -1,0 +1,31 @@
+
+
+Main page :
+
+
+Welcome! 
+
+button : Lets go Backpacking! -> Trip planner page -> 
+
+Lets get some info: (with map and it shows your home base on the map)
+How many days do you want to go?
+How far are you willing to Drive? 
+I am fine to shop for more gear ?
+
+-> 
+
+return a list of trails that fit the descripton
+Theres a plus button to add the trail to the trip
+
+
+
+-> two boxes one says Previous Trips another says Start new trip
+-> click start new trip -> box opens with a list of trails and at the bottom of the list it says start new trail
+
+ buttons: 
+My Trips            My Backpack             My Trails           My Profile
+
+
+
+
+

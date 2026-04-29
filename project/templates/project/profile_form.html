@@ -1,0 +1,56 @@
+<!-- updating profile -->
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Edit Profile{% else %}Create Profile{% endif %}</h1>
+
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+
+    <label>Experience Level</label>
+    {{ form.experience_level }}
+
+    <label>Home Location</label>
+    <input type="text" name="home_location" id="home-location"
+           value="{{ form.instance.home_location }}" placeholder="e.g. Boston, MA">
+    <button type="button" id="locate-btn" class="btn">📍 Here</button>
+
+    <input type="hidden" name="home_latitude" id="home-lat" value="{{ form.instance.home_latitude|default:'' }}">
+    <input type="hidden" name="home_longitude" id="home-lng" value="{{ form.instance.home_longitude|default:'' }}">
+    <p id="coords-display">
+      {% if form.instance.home_latitude %}
+        {{ form.instance.home_latitude }}, {{ form.instance.home_longitude }}
+      {% else %}
+        No location set
+      {% endif %}
+    </p>
+
+    <button type="submit" class="btn">Save</button>
+  </form>
+</div>
+<script>
+document.getElementById('locate-btn').addEventListener('click', function() {
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    var lat = pos.coords.latitude;
+    var lng = pos.coords.longitude;
+    document.getElementById('home-lat').value = lat;
+    document.getElementById('home-lng').value = lng;
+    document.getElementById('coords-display').textContent = lat.toFixed(4) + ', ' + lng.toFixed(4);
+
+    fetch('https://nominatim.openstreetmap.org/reverse?lat=' + lat + '&lon=' + lng + '&format=json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var city = data.address.city || data.address.town || data.address.village || '';
+        var state = data.address.state || '';
+        if (city && state) {
+          document.getElementById('home-location').value = city + ', ' + state;
+        }
+      });
+  }, function(err) {
+    alert('Could not get location. Make sure location services are enabled.');
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Delete Trail</h1>
+<div class="card">
+  <p>Delete <strong>{{ object.name }}</strong>? This will also delete any trips using this trail.</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn">Yes, delete</button>
+    <a href="{% url 'project:trail_detail' object.pk %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}
+    

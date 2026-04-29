@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     "voter_analytics",
     "rest_framework",
     'rest_framework.authtoken',
-    "dadjokes"
+    "dadjokes",
+    "project"
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,7 @@ REST_FRAMEWORK = {
  #   'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
  #   'PAGE_SIZE': 10
 }
+
+
+LOGIN_REDIRECT_URL = '/project/trails/'
+LOGOUT_REDIRECT_URL = '/project/trails/'

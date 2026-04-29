@@ -1,0 +1,21 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Edit Trip{% else %}Plan a Trip{% endif %}</h1>
+
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+
+    {% for field in form %}
+    <div>
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn">Save</button>
+    <a href="{% url 'project:trip_list' %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

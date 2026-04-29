@@ -1,0 +1,36 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<div class="landing">
+  <h1>Welcome to PackBuddy</h1>
+  <p class="tagline">Plan your next backpacking trip</p>
+
+  {% if request.user.is_authenticated %}
+    <a href="{% url 'project:trip_finder' %}" class="btn btn-big">🥾 Let's Go Backpacking!</a>
+
+    <h2>My Dashboard</h2>
+    <div class="dashboard">
+      <a href="{% url 'project:trip_list' %}" class="dash-card">
+        <div class="dash-icon">🗺️</div>
+        <div class="dash-label">My Trips</div>
+      </a>
+      <a href="{% url 'project:gear_list' %}" class="dash-card">
+        <div class="dash-icon">⛺</div>
+        <div class="dash-label">My Gear</div>
+      </a>
+      <a href="{% url 'project:trail_list' %}" class="dash-card">
+        <div class="dash-icon">⛰️</div>
+        <div class="dash-label">My Trails</div>
+      </a>
+      <a href="{% url 'project:profile_detail' request.user.project_profile.pk %}" class="dash-card">
+        <div class="dash-icon">👤</div>
+        <div class="dash-label">My Profile</div>
+      </a>
+    </div>
+
+  {% else %}
+    <a href="{% url 'project:create_profile' %}" class="btn btn-big">Get Started</a>
+    <p>Already have an account? <a href="{% url 'project:login' %}">Log in</a></p>
+  {% endif %}
+</div>
+{% endblock %}

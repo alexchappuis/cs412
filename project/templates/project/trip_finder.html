@@ -1,0 +1,61 @@
+<!-- landing page that takes initial user preferances -->
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Plan a Trip</h1>
+
+<p>Let's get some info about your next adventure.</p>
+
+<div id="map" style="height:350px;margin:16px 0;"></div>
+
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+
+    <label>{{ form.nights.label }}</label>
+    {{ form.nights }}
+
+    <label>{{ form.max_drive_hours.label }}</label>
+    {{ form.max_drive_hours }}
+
+    <label>{{ form.start_date.label }}</label>
+    {{ form.start_date }}
+
+    <button type="submit" class="btn">Find Trails</button>
+  </form>
+</div>
+
+{% if results %}
+<h2>{{ results|length }} trail{{ results|length|pluralize }} found</h2>
+
+{% for r in results %}
+<div class="card">
+  <h3><a href="{% url 'project:trail_detail' r.trail.pk %}">{{ r.trail.name }}</a></h3>
+  <p>{{ r.trail.region }} · {{ r.distance }} mi away</p>
+  <p>{{ r.trail.distance_miles }} mi · {{ r.trail.elevation_gain_ft }} ft gain · {{ r.trail.difficulty }} · {{ r.trail.night_range }} nights</p>
+  <a href="{% url 'project:trip_create' %}?trail={{ r.trail.pk }}&nights={{ nights }}" class="btn">+ Start trip here</a>
+</div>
+{% endfor %}
+
+{% elif request.method == 'POST' %}
+<p>No trails found. Try increasing your drive time.</p>
+{% endif %}
+
+<script>
+  var homeLat = {{ profile.home_latitude }};
+  var homeLng = {{ profile.home_longitude }};
+  var trails = {{ trails_json|safe }};
+
+  var map = L.map('map').setView([homeLat, homeLng], 7);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+  L.marker([homeLat, homeLng]).bindPopup('Home Base').addTo(map);
+
+  trails.forEach(function(t) {
+    L.marker([t.lat, t.lng])
+      .bindPopup('<strong>' + t.name + '</strong><br>' + t.distance + ' mi away')
+      .addTo(map);
+  });
+</script>
+{% endblock %}

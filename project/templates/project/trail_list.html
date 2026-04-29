@@ -1,0 +1,45 @@
+<!-- this templates shows all the trails saved and for each one creates a market on a leaflet map -->
+
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Trails</h1>
+
+<form method="get">
+  <select name="difficulty" onchange="this.form.submit()">
+    <option value="">All difficulties</option>
+    <option value="Easy" {% if request.GET.difficulty == 'Easy' %}selected{% endif %}>Easy</option>
+    <option value="Moderate" {% if request.GET.difficulty == 'Moderate' %}selected{% endif %}>Moderate</option>
+    <option value="Hard" {% if request.GET.difficulty == 'Hard' %}selected{% endif %}>Hard</option>
+    <option value="Expert" {% if request.GET.difficulty == 'Expert' %}selected{% endif %}>Expert</option>
+  </select>
+</form>
+
+<div id="map" style="height:400px;margin:16px 0;"></div>
+
+{% for trail in trails %}
+<div class="card">
+  <h3><a href="{% url 'project:trail_detail' trail.pk %}">{{ trail.name }}</a></h3>
+  <p>{{ trail.region }}</p>
+  <p>{{ trail.distance_miles }} mi · {{ trail.elevation_gain_ft }} ft gain · {{ trail.difficulty }}
+    {% if trail.is_loop %} · Loop{% endif %}
+  </p>
+</div>
+{% empty %}
+<p>No trails found.</p>
+{% endfor %}
+<a href="{% url 'project:trail_create' %}" class="btn">+ Add Trail</a>
+
+<script>
+  var trails = {{ trails_json|safe }};
+  var map = L.map('map').setView([43.5, -71.5], 7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+  trails.forEach(function(t) {
+    L.marker([t.lat, t.lng])
+      .bindPopup('<a href="/project/trails/' + t.id + '/">' + t.name + '</a>')
+      .addTo(map);
+  });
+</script>
+{% endblock %}

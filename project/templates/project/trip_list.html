@@ -1,0 +1,27 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>My Trips</h1>
+
+<div class="dashboard">
+  <a href="{% url 'project:trip_finder' %}" class="dash-card">
+    <div class="dash-icon">➕</div>
+    <div class="dash-label">Start New Trip</div>
+  </a>
+  <a href="#previous" class="dash-card">
+    <div class="dash-icon">📋</div>
+    <div class="dash-label">Previous Trips</div>
+  </a>
+</div>
+
+<h2 id="previous">Previous Trips</h2>
+
+{% for trip in trips %}
+<div class="card">
+  <h3><a href="{% url 'project:trip_detail' trip.pk %}">{{ trip.trail.name }}</a></h3>
+  <p>{{ trip.start_date }} to {{ trip.end_date }} · {{ trip.status }} · {{ trip.trail.region }}</p>
+</div>
+{% empty %}
+<p>No trips yet. <a href="{% url 'project:trip_finder' %}">Plan your first one!</a></p>
+{% endfor %}
+{% endblock %}

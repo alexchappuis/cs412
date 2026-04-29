@@ -1,0 +1,18 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>{{ gear_item.name }}</h1>
+
+<div class="card">
+  <p><strong>Brand:</strong> {{ gear_item.brand|default:"—" }}</p>
+  <p><strong>Category:</strong> {{ gear_item.get_category_display }}</p>
+  <p><strong>Weight:</strong> {{ gear_item.weight_oz }} oz</p>
+  <p><strong>Temp Rating:</strong> {% if gear_item.temp_rating_f %}{{ gear_item.temp_rating_f }}°F{% else %}—{% endif %}</p>
+  <p><strong>Rain Gear:</strong> {% if gear_item.is_rain_gear %}Yes{% else %}No{% endif %}</p>
+  <p><strong>Snow Gear:</strong> {% if gear_item.is_snow_gear %}Yes{% else %}No{% endif %}</p>
+</div>
+
+<a href="{% url 'project:gear_update' gear_item.pk %}" class="btn">Edit</a>
+<a href="{% url 'project:gear_delete' gear_item.pk %}" class="btn">Delete</a>
+<a href="{% url 'project:gear_list' %}">Back to Gear</a>
+{% endblock %}

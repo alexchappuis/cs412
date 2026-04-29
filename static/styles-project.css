@@ -1,0 +1,196 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f0e8;
+  color: #3b3228;
+  min-height: 100vh;
+}
+
+header {
+  background-color: #2d4a3e;
+  padding: 16px 32px;
+}
+
+header h1 a { color: #e8dcc8; text-decoration: none; font-size: 22px; }
+header nav { margin-top: 8px; }
+header nav a { color: #c8d6c3; text-decoration: none; margin-right: 16px; }
+header nav a:hover { color: #e8dcc8; }
+
+header nav button {
+  background: none;
+  border: 1px solid #c8d6c3;
+  color: #c8d6c3;
+  padding: 4px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+main { max-width: 960px; margin: 32px auto; padding: 0 24px; }
+footer { text-align: center; padding: 24px; color: #8b7d6b; margin-top: 40px; }
+
+h1 { color: #2d4a3e; margin-bottom: 20px; }
+h2 { color: #2d4a3e; margin: 24px 0 12px; }
+
+a { color: #4a7c59; }
+a:hover { color: #2d4a3e; }
+
+.btn {
+  display: inline-block;
+  padding: 6px 14px;
+  background-color: #4a7c59;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 4px;
+}
+
+.btn:hover { background-color: #3b6347; color: white; }
+
+.btn-big {
+  font-size: 20px;
+  padding: 16px 40px;
+  margin: 24px 0;
+  border-radius: 8px;
+}
+
+/* Landing page */
+.landing { text-align: center; padding: 32px 16px; }
+.landing .tagline { font-size: 18px; color: #5c4f3d; margin-bottom: 24px; }
+
+/* Dashboard cards */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.dash-card {
+  background: white;
+  border-radius: 10px;
+  padding: 32px 16px;
+  text-align: center;
+  text-decoration: none;
+  color: #2d4a3e;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border: 2px solid transparent;
+}
+
+.dash-card:hover { border-color: #4a7c59; color: #2d4a3e; }
+.dash-icon { font-size: 40px; margin-bottom: 8px; }
+.dash-label { font-size: 16px; font-weight: 500; }
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 12px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.card h3 { color: #2d4a3e; margin-bottom: 6px; }
+.card p { color: #5c4f3d; margin-bottom: 4px; }
+
+/* Weather banner */
+.weather-banner {
+  background: linear-gradient(135deg, #6b8e7f 0%, #4a7c59 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.weather-banner h2 { color: white; margin: 0 0 12px 0; }
+
+.weather-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.weather-stat { text-align: center; }
+.weather-num { font-size: 28px; font-weight: bold; }
+.weather-label { font-size: 13px; opacity: 0.9; }
+
+/* Gear sections */
+.gear-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 16px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.gear-section h3 { color: #2d4a3e; margin-bottom: 8px; }
+.rec-note { color: #5c4f3d; font-size: 14px; margin-bottom: 12px; }
+
+.gear-section table { box-shadow: none; }
+
+tr.recommended {
+  background-color: #fff8e1;
+}
+
+tr.recommended:hover { background-color: #fff4c4; }
+
+.rec-tag {
+  display: inline-block;
+  background: #f4c430;
+  color: #4a3c00;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  margin-left: 6px;
+}
+
+.in-pack {
+  color: #4a7c59;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  margin: 12px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+th {
+  background-color: #2d4a3e;
+  color: #e8dcc8;
+  padding: 10px 14px;
+  text-align: left;
+}
+
+td { padding: 10px 14px; border-bottom: 1px solid #e8e0d0; }
+tr:hover { background-color: #f9f5ed; }
+
+form label { display: block; margin: 8px 0 4px; font-weight: 500; }
+
+form input, form select, form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #c8bda8;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+form textarea { min-height: 80px; }
+
+.packed { text-decoration: line-through; color: #8b7d6b; }
+
+#map { border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+
+.buy-note {
+  background: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  border-radius: 6px;
+  border-left: 4px solid #f4c430;
+}
